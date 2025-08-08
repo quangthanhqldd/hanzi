@@ -74,6 +74,28 @@
       font-weight: bold;
       color: #000;
       border-radius: 5px;
+      z-index: 2;
+    }
+
+    .marquee {
+      margin-top: 50px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #444;
+      text-align: center;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .marquee span {
+      display: inline-block;
+      padding-left: 100%;
+      animation: marquee 12s linear infinite;
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
     }
   </style>
 </head>
@@ -88,15 +110,19 @@
   <div class="image-container">
     <!-- Frame 1: PNG -->
     <div class="image-frame">
-      <img id="charImage" src="https://www.strokeorder.com/assets/bishun/guide/20320.png" alt="Ảnh PNG">
-      <div class="cover-overlay">Quang Thành</div>
+      <img id="charImage" src="" alt="Ảnh PNG">
+      <div class="cover-overlay">Thứ tự nét</div>
     </div>
 
     <!-- Frame 2: GIF -->
     <div class="image-frame">
-      <img id="charGif" src="https://www.strokeorder.com/assets/bishun/animation/20320.gif" alt="Ảnh GIF">
-      <div class="cover-overlay">Quang Thành</div>
+      <img id="charGif" src="" alt="Ảnh GIF">
+      <div class="cover-overlay">Thứ tự viết</div>
     </div>
+  </div>
+
+  <div class="marquee">
+    <span>Chương trình hỗ trợ cho các bạn tập viết theo quy tắc bút thuận. Được phát triển bởi Thành. Zalo 0987 441 962</span>
   </div>
 
   <script>
@@ -104,16 +130,46 @@
     const imgPng = document.getElementById('charImage');
     const imgGif = document.getElementById('charGif');
 
-    input.addEventListener('input', () => {
-      const char = input.value.trim();
-      if (!char || char.length === 0) return;
+    // Hàm cập nhật hình ảnh
+    function updateImages() {
+      let char = input.value.trim();
+
+      // Nếu không nhập gì → hiển thị mặc định là 好
+      if (!char) {
+        char = "好";
+      }
 
       const code = char.codePointAt(0);
       if (!code || isNaN(code)) return;
 
-      imgPng.src = `https://www.strokeorder.com/assets/bishun/guide/${code}.png`;
-      imgGif.src = `https://www.strokeorder.com/assets/bishun/animation/${code}.gif`;
-    });
+      const pngUrl = `https://www.strokeorder.com/assets/bishun/guide/${code}.png`;
+      const gifUrl = `https://www.strokeorder.com/assets/bishun/animation/${code}.gif`;
+
+      // Reset alt trước khi cập nhật
+      imgPng.alt = "Ảnh PNG";
+      imgGif.alt = "Ảnh GIF";
+
+      // Gán ảnh
+      imgPng.src = pngUrl;
+      imgGif.src = gifUrl;
+
+      // Nếu không tải được ảnh → báo lỗi
+      imgPng.onerror = () => {
+        imgPng.src = "";
+        imgPng.alt = "Không tìm thấy";
+      };
+
+      imgGif.onerror = () => {
+        imgGif.src = "";
+        imgGif.alt = "Không tìm thấy";
+      };
+    }
+
+    // Sự kiện khi nhập
+    input.addEventListener('input', updateImages);
+
+    // Khi trang vừa tải → hiển thị mặc định chữ 好
+    window.addEventListener('DOMContentLoaded', updateImages);
   </script>
 
 </body>
