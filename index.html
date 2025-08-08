@@ -3,27 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <title>Hướng Dẫn Viết Chữ Hán</title>
+  <script src="https://unpkg.com/pinyin-pro"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 30px;
       background-color: #f0f0f0;
     }
-
     h1 {
       text-align: center;
       font-size: 36px;
       color: #222;
-      margin-bottom: 40px;
+      margin-bottom: 20px;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
-
     .search-box {
       text-align: center;
       margin-bottom: 30px;
     }
-
     input[type="text"] {
       padding: 15px;
       font-size: 26px;
@@ -31,14 +29,20 @@
       border: 2px solid #999;
       border-radius: 10px;
     }
-
+    .pinyin-display {
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #333;
+    }
     .image-container {
       display: flex;
       gap: 40px;
       flex-wrap: wrap;
       justify-content: center;
+      margin-bottom: 40px;
     }
-
     .image-frame {
       position: relative;
       width: 400px;
@@ -52,13 +56,10 @@
       box-shadow: 0 0 12px rgba(0,0,0,0.2);
       border-radius: 8px;
     }
-
     .image-frame img {
       max-width: 100%;
       max-height: 100%;
-      display: block;
     }
-
     .cover-overlay {
       position: absolute;
       bottom: 5px;
@@ -66,7 +67,6 @@
       width: 160px;
       height: 28px;
       background-color: #f0f0f0;
-      opacity: 1;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -74,27 +74,20 @@
       font-weight: bold;
       color: #000;
       border-radius: 5px;
-      z-index: 2;
     }
-
-    .marquee {
-      margin-top: 50px;
+    .scroll-text {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: #333;
+      color: #fff;
       font-size: 18px;
-      font-weight: bold;
-      color: #444;
+      padding: 10px 0;
       text-align: center;
-      overflow: hidden;
-      white-space: nowrap;
+      animation: scroll-left 20s linear infinite;
     }
-
-    .marquee span {
-      display: inline-block;
-      padding-left: 100%;
-      animation: marquee 12s linear infinite;
-    }
-
-    @keyframes marquee {
-      0% { transform: translateX(0); }
+    @keyframes scroll-left {
+      0% { transform: translateX(100%); }
       100% { transform: translateX(-100%); }
     }
   </style>
@@ -107,70 +100,73 @@
     <input type="text" id="charInput" placeholder="Nhập một chữ Hán (VD: 你, 跑, 跟)">
   </div>
 
-  <div class="image-container">
-    <!-- Frame 1: PNG -->
-    <div class="image-frame">
-      <img id="charImage" src="" alt="Ảnh PNG">
-      <div class="cover-overlay">Thứ tự nét</div>
-    </div>
+  <div class="pinyin-display" id="pinyinText">Phiên âm: hǎo</div>
 
-    <!-- Frame 2: GIF -->
+  <div class="image-container">
     <div class="image-frame">
-      <img id="charGif" src="" alt="Ảnh GIF">
-      <div class="cover-overlay">Thứ tự viết</div>
+      <img id="charImage" src="https://www.strokeorder.com/assets/bishun/guide/22909.png" alt="">
+      <div class="cover-overlay">Quang Thành</div>
+    </div>
+    <div class="image-frame">
+      <img id="charGif" src="https://www.strokeorder.com/assets/bishun/animation/22909.gif" alt="">
+      <div class="cover-overlay">Quang Thành</div>
     </div>
   </div>
 
-  <div class="marquee">
-    <span>Chương trình hỗ trợ cho các bạn tập viết theo quy tắc bút thuận. Được phát triển bởi Thành. Zalo 0987 441 962</span>
+  <div class="scroll-text">
+    Chương trình hỗ trợ cho các bạn tập viết theo quy tắc bút thuận. Được phát triển bởi Thành.
   </div>
 
   <script>
     const input = document.getElementById('charInput');
     const imgPng = document.getElementById('charImage');
     const imgGif = document.getElementById('charGif');
+    const pinyinText = document.getElementById('pinyinText');
 
-    // Hàm cập nhật hình ảnh
-    function updateImages() {
-      let char = input.value.trim();
+    const DEFAULT_CODE = 22909; // chữ "好"
+    const BASE_URL = "https://www.strokeorder.com/assets/bishun";
 
-      // Nếu không nhập gì → hiển thị mặc định là 好
-      if (!char) {
-        char = "好";
+    input.addEventListener('input', () => {
+      const char = input.value.trim();
+      updateContent(char);
+    });
+
+    function updateContent(char) {
+      if (!char || char.length === 0) {
+        loadImages(DEFAULT_CODE);
+        pinyinText.textContent = "Phiên âm: hǎo";
+        return;
       }
 
       const code = char.codePointAt(0);
       if (!code || isNaN(code)) return;
 
-      const pngUrl = `https://www.strokeorder.com/assets/bishun/guide/${code}.png`;
-      const gifUrl = `https://www.strokeorder.com/assets/bishun/animation/${code}.gif`;
+      loadImages(code);
 
-      // Reset alt trước khi cập nhật
-      imgPng.alt = "Ảnh PNG";
-      imgGif.alt = "Ảnh GIF";
-
-      // Gán ảnh
-      imgPng.src = pngUrl;
-      imgGif.src = gifUrl;
-
-      // Nếu không tải được ảnh → báo lỗi
-      imgPng.onerror = () => {
-        imgPng.src = "";
-        imgPng.alt = "Không tìm thấy";
-      };
-
-      imgGif.onerror = () => {
-        imgGif.src = "";
-        imgGif.alt = "Không tìm thấy";
-      };
+      const pinyin = window.pinyinPro.pinyin(char, { toneType: 'mark' });
+      pinyinText.textContent = "Phiên âm: " + (pinyin || "(không tìm thấy)");
     }
 
-    // Sự kiện khi nhập
-    input.addEventListener('input', updateImages);
+    function loadImages(code) {
+      const pngUrl = `${BASE_URL}/guide/${code}.png`;
+      const gifUrl = `${BASE_URL}/animation/${code}.gif`;
 
-    // Khi trang vừa tải → hiển thị mặc định chữ 好
-    window.addEventListener('DOMContentLoaded', updateImages);
+      checkImageAndSet(pngUrl, imgPng, "Không tìm thấy PNG");
+      checkImageAndSet(gifUrl, imgGif, "Không tìm thấy GIF");
+    }
+
+    function checkImageAndSet(url, element, errorText) {
+      const temp = new Image();
+      temp.onload = () => {
+        element.src = url;
+        element.alt = "";
+      };
+      temp.onerror = () => {
+        element.removeAttribute("src");
+        element.alt = errorText;
+      };
+      temp.src = url;
+    }
   </script>
-
 </body>
 </html>
