@@ -33,7 +33,12 @@
       width: 180px;
       border: 2px solid #999;
       border-radius: 8px;
-    }
+	}
+	.search-box input::placeholder {
+		font-size: 14px;
+		font-style: italic;
+		color: #888; /* tuỳ chỉnh màu nếu muốn */
+	}
     .pinyin-display {
       font-size: 20px;
       font-weight: bold;
@@ -43,7 +48,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 30px;
+      gap: 10px;	/* khoang cach giua 2 frame */
       margin-bottom: 40px;
     }
     .image-frame {
@@ -106,7 +111,7 @@
   <h1>HƯỚNG DẪN VIẾT CHỮ HÁN</h1>
 
   <div class="search-box">
-    <input type="text" id="charInput" placeholder="Nhập 1 chữ Hán">
+    <input type="text" id="charInput" placeholder="Nhập 1 chữ Hán vào đây">
     <div class="pinyin-display" id="pinyinText">Phiên âm: hǎo</div>
   </div>
 
