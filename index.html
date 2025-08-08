@@ -4,49 +4,54 @@
   <meta charset="UTF-8">
   <title>Hướng Dẫn Viết Chữ Hán</title>
   <script src="https://unpkg.com/pinyin-pro"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 30px;
+      padding: 20px;
       background-color: #f0f0f0;
+      margin: 0;
     }
     h1 {
       text-align: center;
-      font-size: 36px;
+      font-size: 28px;
       color: #222;
       margin-bottom: 20px;
       text-transform: uppercase;
-      letter-spacing: 1px;
     }
     .search-box {
-      text-align: center;
-      margin-bottom: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
     }
-    input[type="text"] {
-      padding: 15px;
-      font-size: 26px;
-      width: 420px;
+    .search-box input[type="text"] {
+      padding: 10px;
+      font-size: 20px;
+      width: 200px;
       border: 2px solid #999;
-      border-radius: 10px;
+      border-radius: 8px;
     }
     .pinyin-display {
-      text-align: center;
-      font-size: 24px;
+      font-size: 20px;
       font-weight: bold;
-      margin-bottom: 20px;
       color: #333;
     }
     .image-container {
       display: flex;
-      gap: 40px;
-      flex-wrap: wrap;
-      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
       margin-bottom: 40px;
     }
     .image-frame {
       position: relative;
-      width: 400px;
-      height: 400px;
+      width: 90vw;
+      max-width: 480px;
+      height: 90vw;
+      max-height: 480px;
       border: 2px solid #444;
       background-color: #fff;
       display: flex;
@@ -54,7 +59,7 @@
       justify-content: center;
       overflow: hidden;
       box-shadow: 0 0 12px rgba(0,0,0,0.2);
-      border-radius: 8px;
+      border-radius: 10px;
     }
     .image-frame img {
       max-width: 100%;
@@ -62,18 +67,15 @@
     }
     .cover-overlay {
       position: absolute;
-      bottom: 5px;
-      right: 5px;
-      width: 160px;
-      height: 28px;
-      background-color: #f0f0f0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+	  width: 160px;
+      bottom: 12px;
+      right: 10px;
+      padding: 3px 8px;
+      background-color: rgba(240,240,240,1);
       font-size: 14px;
       font-weight: bold;
       color: #000;
-      border-radius: 5px;
+      border-radius: 4px;
     }
     .scroll-text {
       position: fixed;
@@ -81,10 +83,11 @@
       width: 100%;
       background-color: #333;
       color: #fff;
-      font-size: 18px;
-      padding: 10px 0;
+      font-size: 16px;
+      padding: 8px 0;
       text-align: center;
       animation: scroll-left 20s linear infinite;
+      z-index: 100;
     }
     @keyframes scroll-left {
       0% { transform: translateX(100%); }
@@ -97,24 +100,23 @@
   <h1>HƯỚNG DẪN VIẾT CHỮ HÁN</h1>
 
   <div class="search-box">
-    <input type="text" id="charInput" placeholder="Nhập một chữ Hán (VD: 你, 跑, 跟)">
+    <input type="text" id="charInput" placeholder="Nhập chữ Hán">
+    <div class="pinyin-display" id="pinyinText">Phiên âm: hǎo</div>
   </div>
-
-  <div class="pinyin-display" id="pinyinText">Phiên âm: hǎo</div>
 
   <div class="image-container">
     <div class="image-frame">
       <img id="charImage" src="https://www.strokeorder.com/assets/bishun/guide/22909.png" alt="">
-      <div class="cover-overlay">Quang Thành</div>
+      <div class="cover-overlay">Thứ tự nét</div>
     </div>
     <div class="image-frame">
       <img id="charGif" src="https://www.strokeorder.com/assets/bishun/animation/22909.gif" alt="">
-      <div class="cover-overlay">Quang Thành</div>
+      <div class="cover-overlay">Thứ tự viết</div>
     </div>
   </div>
 
   <div class="scroll-text">
-    Chương trình hỗ trợ cho các bạn tập viết theo quy tắc bút thuận. Được phát triển bởi Thành.
+    Chương trình hỗ trợ các bạn tập viết theo quy tắc bút thuận. Phát triển bởi Thành.
   </div>
 
   <script>
