@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Hướng Dẫn Viết Chữ Hán</title>
+  <title>Viết Chữ Hán</title>
   <script src="https://unpkg.com/pinyin-pro"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
@@ -21,16 +21,17 @@
     }
     .search-box {
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: center;
       gap: 10px;
       flex-wrap: wrap;
       margin-bottom: 20px;
+	  margin-left: 40px; /* dời sang trái thêm 40px */
     }
     .search-box input[type="text"] {
       padding: 10px;
       font-size: 20px;
-      width: 200px;
+      width: 150px;
       border: 2px solid #999;
       border-radius: 8px;
     }
@@ -68,15 +69,18 @@
     .cover-overlay {
       position: absolute;
 	  width: 160px;
-      bottom: 5px;
+      bottom: 10px;
       right: 5px;
-	  height: 30px;
+	  height: 20px;
       padding: 3px 8px;
       background-color: rgba(240,240,240,1);
       font-size: 14px;
       font-weight: bold;
       color: #000;
       border-radius: 4px;
+	  display: flex;
+	align-items: center;       /* Căn giữa theo chiều dọc */
+	justify-content: center;   /* Căn giữa theo chiều ngang */
     }
     .scroll-text {
       position: fixed;
@@ -154,8 +158,8 @@
       const pngUrl = `${BASE_URL}/guide/${code}.png`;
       const gifUrl = `${BASE_URL}/animation/${code}.gif`;
 
-      checkImageAndSet(pngUrl, imgPng, "Không tìm thấy PNG");
-      checkImageAndSet(gifUrl, imgGif, "Không tìm thấy GIF");
+      checkImageAndSet(pngUrl, imgPng, "Không tìm thấy chữ Hán");
+      checkImageAndSet(gifUrl, imgGif, "Không tìm thấy chữ Hán");
     }
 
     function checkImageAndSet(url, element, errorText) {
