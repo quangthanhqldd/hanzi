@@ -21,17 +21,16 @@
     }
     .search-box {
       display: flex;
-      justify-content: flex-start;
+      justify-content: center;
       align-items: center;
       gap: 10px;
       flex-wrap: wrap;
       margin-bottom: 20px;
-	  margin-left: 40px; /* dời sang trái thêm 40px */
     }
     .search-box input[type="text"] {
       padding: 10px;
       font-size: 20px;
-      width: 150px;
+      width: 180px;
       border: 2px solid #999;
       border-radius: 8px;
     }
@@ -71,33 +70,35 @@
 	  width: 160px;
       bottom: 10px;
       right: 5px;
-	  height: 20px;
+	  height: 23px;
       padding: 3px 8px;
       background-color: rgba(240,240,240,1);
-      font-size: 14px;
+      font-size: 18px;
       font-weight: bold;
       color: #000;
       border-radius: 4px;
 	  display: flex;
-	align-items: center;       /* Căn giữa theo chiều dọc */
-	justify-content: center;   /* Căn giữa theo chiều ngang */
+	  align-items: center;       /* Căn giữa theo chiều dọc */
+	  justify-content: center;   /* Căn giữa theo chiều ngang */
     }
-    .scroll-text {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background-color: #333;
-      color: #fff;
-      font-size: 16px;
-      padding: 8px 0;
-      text-align: center;
-      animation: scroll-left 20s linear infinite;
-      z-index: 100;
-    }
-    @keyframes scroll-left {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
-    }
+			.scroll-text {
+		  position: fixed;
+		  bottom: 0;
+		  width: 100%;
+		  background-color: #333;
+		  color: #fff;
+		  font-size: 16px;
+		  padding: 8px 0;
+		  text-align: center;
+		  z-index: 100;
+		  animation: swing-text 4s ease-in-out infinite alternate;
+		  white-space: nowrap;
+		}
+
+		@keyframes swing-text {
+		  0% { transform: translateX(-20%); }
+		  100% { transform: translateX(20%); }
+		}
   </style>
 </head>
 <body>
@@ -105,7 +106,7 @@
   <h1>HƯỚNG DẪN VIẾT CHỮ HÁN</h1>
 
   <div class="search-box">
-    <input type="text" id="charInput" placeholder="Nhập chữ Hán">
+    <input type="text" id="charInput" placeholder="Nhập 1 chữ Hán">
     <div class="pinyin-display" id="pinyinText">Phiên âm: hǎo</div>
   </div>
 
@@ -121,7 +122,7 @@
   </div>
 
   <div class="scroll-text">
-    Tác giả Thành 0987 441 962.
+    Ủng hộ cho tác giả Thành 0987 441 962. Xin cảm ơn
   </div>
 
   <script>
