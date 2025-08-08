@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Viết Chữ Hán</title>
   <script src="https://unpkg.com/pinyin-pro"></script>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -35,7 +35,7 @@
       border-radius: 8px;
 	}
 	.search-box input::placeholder {
-		font-size: 14px;
+		font-size: 16px;
 		font-style: italic;
 		color: #888; /* tuỳ chỉnh màu nếu muốn */
 	}
@@ -86,29 +86,11 @@
 	  align-items: center;       /* Căn giữa theo chiều dọc */
 	  justify-content: center;   /* Căn giữa theo chiều ngang */
     }
-			.scroll-text {
-		  position: fixed;
-		  bottom: 0;
-		  width: 100%;
-		  background-color: #333;
-		  color: #fff;
-		  font-size: 16px;
-		  padding: 8px 0;
-		  text-align: center;
-		  z-index: 100;
-		  animation: swing-text 4s ease-in-out infinite alternate;
-		  white-space: nowrap;
-		}
-
-		@keyframes swing-text {
-		  0% { transform: translateX(-20%); }
-		  100% { transform: translateX(20%); }
-		}
   </style>
 </head>
 <body>
 
-  <h1>HƯỚNG DẪN VIẾT CHỮ HÁN</h1>
+  <h1>QUY TẮC BÚT THUẬN</h1>
 
   <div class="search-box">
     <input type="text" id="charInput" placeholder="Nhập 1 chữ Hán vào đây">
@@ -124,10 +106,6 @@
       <img id="charGif" src="https://www.strokeorder.com/assets/bishun/animation/22909.gif" alt="">
       <div class="cover-overlay">Thứ tự viết</div>
     </div>
-  </div>
-
-  <div class="scroll-text">
-    Ủng hộ cho Thành 0987 441 962 nhé. Xin cảm ơn
   </div>
 
   <script>
