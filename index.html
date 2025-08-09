@@ -5,7 +5,9 @@
   <title>Viết Chữ Hán</title>
   <script src="https://unpkg.com/pinyin-pro"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
   <style>
+    /* ====== BODY & TITLE ====== */
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
@@ -19,6 +21,8 @@
       margin-bottom: 20px;
       text-transform: uppercase;
     }
+
+    /* ====== SEARCH BOX ====== */
     .search-box {
       display: flex;
       justify-content: center;
@@ -33,24 +37,28 @@
       width: 180px;
       border: 2px solid #999;
       border-radius: 8px;
-	}
-	.search-box input::placeholder {
-		font-size: 16px;
-		font-style: italic;
-		color: #888; /* tuỳ chỉnh màu nếu muốn */
-	}
+    }
+    .search-box input::placeholder {
+      font-size: 16px;
+      font-style: italic;
+      color: #888;
+    }
     .pinyin-display {
       font-size: 20px;
       font-weight: bold;
       color: #333;
     }
+
+    /* ====== IMAGE CONTAINER ====== */
     .image-container {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 10px;	/* khoang cach giua 2 frame */
+      gap: 10px;
       margin-bottom: 40px;
     }
+
+    /* ====== IMAGE FRAME ====== */
     .image-frame {
       position: relative;
       width: 90vw;
@@ -70,94 +78,129 @@
       max-width: 100%;
       max-height: 100%;
     }
+
+    /* ====== OVERLAY LABEL ====== */
     .cover-overlay {
       position: absolute;
-	  width: 160px;
+      width: 160px;
       bottom: 7px;
       right: 5px;
-	  height: 23px;
+      height: 23px;
       padding: 3px 8px;
       background-color: rgba(240,240,240,1);
       font-size: 18px;
       font-weight: bold;
       color: #000;
       border-radius: 4px;
-	  display: flex;
-	  align-items: center;       /* Căn giữa theo chiều dọc */
-	  justify-content: center;   /* Căn giữa theo chiều ngang */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ====== CROSS LINES ====== */
+    .line-horizontal,
+    .line-vertical {
+      position: absolute;
+      background-color: rgba(0, 0, 0, 0.2);
+      z-index: 2;
+    }
+    .line-horizontal {
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      transform: translateY(2px);
+    }
+    .line-vertical {
+      top: 0;
+      left: 50%;
+      width: 3px;
+      height: 100%;
+      transform: translateX(-3px); /* Dịch sang trái thêm 2px từ gốc -1px */
     }
   </style>
 </head>
+
 <body>
 
+  <!-- ====== TIÊU ĐỀ ====== -->
   <h1>QUY TẮC BÚT THUẬN</h1>
 
+  <!-- ====== Ô TÌM KIẾM ====== -->
   <div class="search-box">
     <input type="text" id="charInput" placeholder="Nhập 1 chữ Hán vào đây">
     <div class="pinyin-display" id="pinyinText">Phiên âm: hǎo</div>
   </div>
 
+  <!-- ====== KHU VỰC HÌNH ẢNH ====== -->
   <div class="image-container">
+    <!-- Ảnh PNG có dấu + -->
     <div class="image-frame">
       <img id="charImage" src="https://www.strokeorder.com/assets/bishun/guide/22909.png" alt="">
+      <div class="line-horizontal"></div>
+      <div class="line-vertical"></div>
       <div class="cover-overlay">Thứ tự nét</div>
     </div>
+
+    <!-- Ảnh GIF không dấu + -->
     <div class="image-frame">
       <img id="charGif" src="https://www.strokeorder.com/assets/bishun/animation/22909.gif" alt="">
+	  <div class="line-horizontal"></div>
+      <div class="line-vertical"></div>
       <div class="cover-overlay">Thứ tự viết</div>
     </div>
   </div>
 
+  <!-- ====== JAVASCRIPT ====== -->
   <script>
-    const input = document.getElementById('charInput');
-    const imgPng = document.getElementById('charImage');
-    const imgGif = document.getElementById('charGif');
-    const pinyinText = document.getElementById('pinyinText');
+    const input       = document.getElementById('charInput');
+    const imgPng      = document.getElementById('charImage');
+    const imgGif      = document.getElementById('charGif');
+    const pinyinText  = document.getElementById('pinyinText');
 
-    const DEFAULT_CODE = 22909; // chữ "好"
-    const BASE_URL = "https://www.strokeorder.com/assets/bishun";
+    const DEFAULT_CHAR = "好";
+    const DEFAULT_CODE = DEFAULT_CHAR.codePointAt(0);
+    const BASE_URL     = "https://www.strokeorder.com/assets/bishun";
 
+    // --- Xử lý nhập ---
     input.addEventListener('input', () => {
       const char = input.value.trim();
       updateContent(char);
     });
 
+    // --- Cập nhật nội dung ---
     function updateContent(char) {
-      if (!char || char.length === 0) {
+      if (!char) {
         loadImages(DEFAULT_CODE);
-        pinyinText.textContent = "Phiên âm: hǎo";
+        pinyinText.textContent = "Phiên âm: " + window.pinyinPro.pinyin(DEFAULT_CHAR, { toneType: 'mark' });
         return;
       }
 
       const code = char.codePointAt(0);
-      if (!code || isNaN(code)) return;
+      if (!code) return;
 
       loadImages(code);
-
       const pinyin = window.pinyinPro.pinyin(char, { toneType: 'mark' });
       pinyinText.textContent = "Phiên âm: " + (pinyin || "(không tìm thấy)");
     }
 
+    // --- Tải ảnh ---
     function loadImages(code) {
       const pngUrl = `${BASE_URL}/guide/${code}.png`;
       const gifUrl = `${BASE_URL}/animation/${code}.gif`;
 
-      checkImageAndSet(pngUrl, imgPng, "Không tìm thấy chữ Hán");
-      checkImageAndSet(gifUrl, imgGif, "Không tìm thấy chữ Hán");
+      checkImageAndSet(pngUrl, imgPng, `${BASE_URL}/guide/${DEFAULT_CODE}.png`);
+      checkImageAndSet(gifUrl, imgGif, `${BASE_URL}/animation/${DEFAULT_CODE}.gif`);
     }
 
-    function checkImageAndSet(url, element, errorText) {
+    // --- Kiểm tra ảnh và gán ---
+    function checkImageAndSet(url, element, fallback) {
       const temp = new Image();
-      temp.onload = () => {
-        element.src = url;
-        element.alt = "";
-      };
-      temp.onerror = () => {
-        element.removeAttribute("src");
-        element.alt = errorText;
-      };
+      temp.onload  = () => { element.src = url; };
+      temp.onerror = () => { element.src = fallback; };
       temp.src = url;
     }
   </script>
+
 </body>
 </html>
