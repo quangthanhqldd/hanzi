@@ -106,11 +106,12 @@
 }
 
 .image-frame .line-horizontal {
-  top: 50%;
+  position: absolute;
+  top: 50%; /* Tỷ lệ này không đổi dù ảnh to hay nhỏ */
   left: 0;
   width: 100%;
   height: 3px;
-  transform: translateY(calc(-50% + 2px)); /* chỉ hạ thêm 0.5px */
+  background: rgba(0,0,0,0.5);
 }
 
 .image-frame .line-vertical {
