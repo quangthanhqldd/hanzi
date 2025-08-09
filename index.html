@@ -106,11 +106,11 @@
 }
 
 .image-frame .line-horizontal {
-   top: calc(50% + 0.5px); /* Hạ xuống thêm 4px */
+  top: 50%;
   left: 0;
   width: 100%;
   height: 3px;
-   transform: translateY(-50%); /* Luôn đúng giữa khung, mọi màn hình */
+  transform: translateY(calc(-50% + 2px)); /* chỉ hạ thêm 0.5px */
 }
 
 .image-frame .line-vertical {
